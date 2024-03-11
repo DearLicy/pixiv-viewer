@@ -1,0 +1,11 @@
+# 默认 API 实例（地址需要写到 `/api/pixiv` 部分）
+VUE_APP_DEF_HIBIAPI_MAIN=https://api.obfs.dev/api/pixiv
+
+# API 实例选项，格式(英文逗号与分号分隔，最后一项结尾没有分号)：
+VUE_APP_HIBIAPI_ALTS=公益节点1,https://api.obfs.dev/api/pixiv;公益节点2,https://hibi.moecube.com/api/pixiv
+
+# 默认图床（不带 `https://`）
+VUE_APP_DEF_PXIMG_MAIN=i.pixiv.re
+
+# 图床选项，格式(英文逗号与分号分隔，最后一项结尾没有分号)：
+VUE_APP_PXIMG_PROXYS=公益图床1,i.pixiv.re;公益图床2,i.pixiv.cat
