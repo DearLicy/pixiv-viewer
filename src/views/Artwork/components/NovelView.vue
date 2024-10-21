@@ -2,12 +2,12 @@
   <div
     ref="view"
     class="novel-view"
-    :class="{ shrink: isShrink, loaded: artwork.images, censored: isCensored(artwork) }"
+    :class="{ shrink: isShrink, loaded: artwork.images, censored }"
     :style="{ backgroundColor: textConfig.bg }"
     @click="showFull"
   >
     <div class="image-box">
-      <img v-lazy="getImgUrl" :alt="artwork.title" class="image">
+      <Pximg :src="getImgUrl" nobg :alt="artwork.title" class="image" />
     </div>
     <div
       class="novel_text"
@@ -53,6 +53,9 @@ export default {
   },
   computed: {
     ...mapGetters(['isCensored']),
+    censored() {
+      return this.isCensored(this.artwork)
+    },
     getImgUrl() {
       return this.artwork.images?.[0]?.m || ''
     },

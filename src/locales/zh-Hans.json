@@ -212,7 +212,7 @@
   "setting": {
     "about": "关于",
     "other": {
-      "title": "其他设置",
+      "title": "偏好设置",
       "lang": "语言",
       "lang_ph": "请选择语言",
       "manual_input": "手动输入代理/API地址",
@@ -409,5 +409,28 @@
   "a1HSQm-WYv6GDFwhKr9x_": "清理后设置项将重置",
   "LC7_PMpEgK-L5fx7s4TBv": "从 ugoira.com 下载",
   "mR4YFHYUnr00zmzYydrMv": "图片列表铺满屏幕",
-  "V-KoSeNoEiNct7oZJgCcD": "关闭此开关会为图片列表设置最大宽度"
+  "V-KoSeNoEiNct7oZJgCcD": "关闭此开关会为图片列表设置最大宽度",
+  "g4JWYmBbfeweCBkRSgGNw": "直播",
+  "qzuDyLgl-y1tIhY0Dc_6s": "人气直播",
+  "bJ1fo_0HLdA1bWDIic_CT": "结果仅供参考",
+  "fSITk3ygQ7rxjm0lDUoSV": "此作品有 {0}% 的可能性是由 AI 生成的。",
+  "Wc3yMDMSkHUhoGx22bsP8": "导入设置",
+  "Bi5BpYwKhUhWcm_RueGZN": "导出设置",
+  "psoXLFqv51j1SeKjTbnms": "应用主题色",
+  "lGZGzwfWz9tW_KQey3AmQ": "启用 pximg 图片直连模式",
+  "nTsgCnGYm8FSVMfe-TQSN": "确认启用 pximg 直连模式？",
+  "YeEO8hAsoM45pm_vcijKP": "pximg 直连模式需确保 Tampermonkey 与 Helper 脚本已安装，且速度可能较慢、不保证稳定性。",
+  "9omPI2Fz4KzKSVNlmF8-K": "Tampermonkey 或 Helper 脚本未安装，启用失败",
+  "lkfd4SXJiefx26Z7vj0Au": "Helper 脚本地址",
+  "2jNIricwtCbrzEESdEbvH": "点击安装",
+  "hGqGftQ7v772prEac1hbJ": "评论",
+  "1V8tlBs--oNk_UbzsItA-": "备用域名",
+  "vqHSGcz4r3oSQIWQwZiVf": "还没有人发表评论呢~",
+  "0CDMRP9wSGJQTyMbvrM8z": "查看回复",
+  "qLUWER5bf4X2lE0RjKTBj": "详情页使用 Fancybox 查看原图",
+  "k0V0c1MNZGYs9MCqjx8QL": "无效的session ID",
+  "3UCLxnEsirUQvP_xv4po4": "访问令牌格式错误",
+  "QRASoWf3qDfwihoIa84C9": "不可与长按屏蔽一起使用",
+  "NgE24V8lvXN2c15W_2gnE": "长按可屏蔽作者或标签，不可与长按下载一起使用",
+  "WdS4RTIeeWqdaqLtvk7ZO": "将图片标题与作者置于图片卡下方，点击标题可预览图片"
 }

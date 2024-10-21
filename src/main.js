@@ -1,28 +1,31 @@
 // import 'swiper/css/swiper.css'
 import '@/assets/style/base.styl'
+import '@/assets/style/theme.styl'
 
 import '@vant/touch-emulator'
 import './polyfill'
 import './registerServiceWorker'
 
 import { init } from 'console-ban'
-import Vant, { Dialog, ImagePreview, Lazyload, Notify, Toast } from 'vant'
 import Vue from 'vue'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import VueMasonry from 'vue-masonry-css'
 import VueMeta from 'vue-meta'
+import Vant, { Dialog, ImagePreview, Lazyload, Notify, Toast } from 'vant'
 
-import App from './App.vue'
-import { getActionMap } from './api/client/action'
+import SvgIcon, { loadingSvg } from './icons'
 import ImageLayout from './components/ImageLayout.vue'
-import TopBar from './components/TopBar'
-import { getSelectedLang, i18n, initLocale } from './i18n'
-import SvgIcon from './icons'
+import TopBar from './components/TopBar.vue'
+import Pximg from './components/DirectPximg.vue'
+import App from './App.vue'
 import router from './router'
 import store from './store'
 import longpress from './directives/longpress'
-import { initBookmarkCache } from './utils/storage/siteCache'
 import { LocalStorage } from './utils/storage'
+import { getSelectedLang, i18n, initLocale } from './i18n'
+import { getActionMap } from './api/client/action'
+import { initBookmarkCache } from './utils/storage/siteCache'
+import { isProduction } from './consts'
 
 setupApp()
 
@@ -37,18 +40,10 @@ async function setupApp() {
   Vue.use(Toast)
   Vue.use(ImagePreview)
   Vue.use(Lazyload, {
-    // observer: true,
+    observer: true,
     lazyComponent: true,
-    loading: require('@/icons/loading.svg'),
+    loading: localStorage.PXV_ACT_COLOR ? loadingSvg(localStorage.PXV_ACT_COLOR) : require('@/icons/loading.svg'),
     preload: 1.5,
-    adapter: {
-      error(evt) {
-        const src = evt.src
-        if (!src?.includes('i-cf.pximg.net')) return
-        if (!/\/artworks\/|\/spotlight\//i.test(location.href)) evt.el.src = ''
-        evt.el.src = src.replace('i-cf.pximg.net', 'i.pixiv.re')
-      },
-    },
   })
   Vue.use(Vant)
   Vue.use(VueAwesomeSwiper)
@@ -59,6 +54,7 @@ async function setupApp() {
 
   Vue.component('WfCont', ImageLayout)
   Vue.component('TopBar', TopBar)
+  Vue.component('Pximg', Pximg)
 
   Vue.config.productionTip = false
 
@@ -69,7 +65,7 @@ async function setupApp() {
     render: h => h(App),
   }).$mount('#app')
 
-  if (process.env.NODE_ENV === 'production') {
+  if (isProduction) {
     init()
   }
 }
@@ -113,22 +109,20 @@ async function checkWechat() {
 }
 
 async function checkBrowser() {
-  const message = i18n.t('tip.browser_latest')
   if (/Quark|QQBrowser|baidu|NewsArticle|UCBrowser|Huawei|HeyTap|Miui|Vivo|Oppo|360se|Sogou/i.test(navigator.userAgent)) {
-    Notify({
-      message,
-      color: '#fff',
-      background: '#f1c25f',
-      duration: 2500,
+    document.body.innerHTML = ''
+    Dialog.alert({
+      message: i18n.t('tip.browser_tip'),
+      theme: 'round-button',
     })
-    return true
+    throw new Error('BLOCKED.')
   }
   const chromeVer = parseInt(navigator.userAgent.match(/Chrome\/([\d.]+)/)?.[1])
-  if (chromeVer && chromeVer < 100) {
+  if (chromeVer && chromeVer < 106) {
     Notify({
-      message,
+      message: i18n.t('tip.browser_latest'),
       color: '#fff',
-      background: '#f1c25f',
+      background: localStorage.PXV_ACT_COLOR || '#f1c25f',
       duration: 2500,
     })
   }

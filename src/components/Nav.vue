@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-container" :class="{ showNav: showNav }">
+  <div class="nav-container" :class="{ showNav: isNavAppear }">
     <ul class="nav-bar">
       <li @click="navigateTo('Home')">
         <Icon
@@ -44,8 +44,8 @@
         <van-icon v-if="isDark" :class="{ active: isActive('Setting') }" name="setting-o" />
         <span>{{ $t('nav.setting') }}</span>
       </li>
-      <li v-if="!isListenScroll" class="nav_to_top" @click="scrollToTop()">
-        <Icon class="icon" name="to_top" />
+      <li v-if="!isShowBackTop" class="nav_to_top" @click="scrollToTop()">
+        <Icon class="icon" name="to_top" index="BackTop" />
         <van-icon v-if="isDark" name="back-top" />
         <span>Top</span>
       </li>
@@ -58,44 +58,19 @@ import { existsSessionId } from '@/api/user'
 
 const isWebLogin = existsSessionId()
 
-function throttleScroll(el, downFn, upFn) {
-  let position = el.scrollTop
-  let ticking = false
-  return function (arg) {
-    if (ticking) return
-    ticking = true
-    window.requestAnimationFrame(() => {
-      const scroll = el.scrollTop
-      scroll > position ? downFn?.(scroll, arg) : upFn?.(scroll, arg)
-      position = scroll
-      ticking = false
-    })
-  }
-}
-
 export default {
+  props: {
+    isNavAppear: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
       isLogin: window.APP_CONFIG.useLocalAppApi || isWebLogin,
-      showNav: true,
-      scrollFn: () => {},
-      isListenScroll: document.documentElement.clientWidth < 1280,
+      isShowBackTop: document.documentElement.clientWidth < 1280,
       isDark: !!localStorage.PXV_DARK,
     }
-  },
-  mounted() {
-    console.log(this.$route)
-    if (this.isListenScroll) {
-      this.scrollFn = throttleScroll(document.documentElement, scroll => {
-        if (scroll > 160) this.showNav = false
-      }, () => {
-        this.showNav = true
-      })
-      addEventListener('scroll', this.scrollFn, { passive: true })
-    }
-  },
-  destroyed() {
-    this.isListenScroll && removeEventListener('scroll', this.scrollFn)
   },
   methods: {
     isActive(name) {
@@ -149,7 +124,7 @@ export default {
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
     // backdrop-filter: blur(6px);
-    backdrop-filter: saturate(200%) blur(6px);
+    backdrop-filter: saturate(200%) blur(10PX);
     background: rgba(255, 255, 255, 0.8);
 
     li {

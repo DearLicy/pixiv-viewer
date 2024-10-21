@@ -6,12 +6,12 @@
       @click.stop="click(artwork.id)"
       @contextmenu="preventContext"
     >
-      <img
-        v-lazy="imgSrc"
+      <Pximg
         class="image"
-        :class="{ censored: isCensored(artwork) }"
+        :src="imgSrc"
+        :class="{ censored }"
         :alt="artwork.title"
-      >
+      />
       <div class="tag-r18-ai">
         <van-tag v-if="index">#{{ index }}</van-tag>
         <van-tag v-if="tagText" :color="tagText === 'R-18' ? '#fb7299' : '#ff3f3f'">{{ tagText }}</van-tag>
@@ -35,7 +35,7 @@
         <div v-if="!isOuterMeta" class="content">
           <h2 class="title" :title="artwork.title">{{ artwork.title }}</h2>
           <div class="author-cont">
-            <img :src="artwork.author.avatar" :alt="artwork.author.name" class="avatar" @error="onAvatarErr">
+            <Pximg :src="artwork.author.avatar" :alt="artwork.author.name" nobg class="avatar" />
             <div class="author">{{ artwork.author.name }}</div>
           </div>
         </div>
@@ -43,9 +43,11 @@
     </div>
     <div v-if="isOuterMeta && (mode == 'all' || mode === 'meta')" class="outer-meta">
       <div class="content">
-        <h2 class="title" :title="artwork.title">{{ artwork.title }}</h2>
-        <div class="author-cont">
-          <img :src="artwork.author.avatar" :alt="artwork.author.name" class="avatar" @error="onAvatarErr">
+        <h2 class="title" :title="artwork.title + ' ' + artwork.created" @click="onImageTitleClick">
+          {{ artwork.title }}
+        </h2>
+        <div class="author-cont" @click="toAuthor">
+          <Pximg :src="artwork.author.avatar" :alt="artwork.author.name" nobg class="avatar" />
           <div class="author">{{ artwork.author.name }}</div>
         </div>
       </div>
@@ -60,10 +62,12 @@ import { mapGetters } from 'vuex'
 import { localApi } from '@/api'
 import { LocalStorage } from '@/utils/storage'
 import { getCache, toggleBookmarkCache } from '@/utils/storage/siteCache'
+import { isAiIllust } from '@/utils/filter'
+import { fancyboxShow } from '@/utils'
 
 const isLongpressDL = LocalStorage.get('PXV_LONGPRESS_DL', false)
 const isLongpressBlock = LocalStorage.get('PXV_LONGPRESS_BLOCK', false)
-const isOuterMeta = LocalStorage.get('PXV_IMG_META_OUTER', false)
+const isOuterMeta = LocalStorage.get('PXV_IMG_META_OUTER', true)
 
 export default {
   props: {
@@ -106,7 +110,7 @@ export default {
       return this.artwork.images[0].m
     },
     isAiIllust() {
-      return this.artwork.illust_ai_type == 2
+      return isAiIllust(this.artwork)
     },
     tagText() {
       if (this.artwork.x_restrict == 1) {
@@ -118,6 +122,9 @@ export default {
       }
     },
     ...mapGetters(['isCensored']),
+    censored() {
+      return this.isCensored(this.artwork)
+    },
   },
   async mounted() {
     if ((this.mode == 'all' || this.mode == 'cover') && this.showBookmarkBtn) {
@@ -126,19 +133,19 @@ export default {
     }
   },
   methods: {
-    onAvatarErr() {
-      const src = this.artwork.author.avatar
-      if (!src) return
-      if (src.includes('i.pixiv.re')) return
-      try {
-        const u = new URL(src)
-        u.host = 'i.pixiv.re'
-        // eslint-disable-next-line vue/no-mutating-props
-        this.artwork.author.avatar = u.href
-      } catch (error) {
-        console.log('error: ', error)
-      }
-    },
+    // onAvatarErr() {
+    //   const src = this.artwork.author.avatar
+    //   if (!src) return
+    //   if (src.includes('i.pixiv.re')) return
+    //   try {
+    //     const u = new URL(src)
+    //     u.host = 'i.pixiv.re'
+    //     // eslint-disable-next-line vue/no-mutating-props
+    //     this.artwork.author.avatar = u.href
+    //   } catch (error) {
+    //     console.log('error: ', error)
+    //   }
+    // },
     async toggleBookmark() {
       if (this.bLoading) return
       this.bLoading = true
@@ -187,6 +194,13 @@ export default {
       if (!this.isTriggerLongpress) return
       ev.preventDefault()
       isLongpressDL ? this.downloadArtwork() : this.showBlockDialog()
+    },
+    onImageTitleClick() {
+      fancyboxShow(this.artwork, 0, e => e.l.replace(/\/c\/\d+x\d+(_\d+)?\//g, '/'))
+    },
+    toAuthor() {
+      if (this.$route.name == 'Users') return
+      this.$router.push(`/users/${this.artwork.author.id}`)
     },
     showBlockDialog() {
       Dialog.confirm({
@@ -374,7 +388,7 @@ export default {
     .author
       display: inline-block;
       font-size: 20px;
-      font-weight: 200;
+      // font-weight: 200;
 
 .outer-meta
   .content

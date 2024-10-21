@@ -3,6 +3,13 @@
 <h1 align="center">Pixiv Viewer <sup><small>Kai</small></sup></h1>
 <p align="center">Yet Another Pixiv Illust&Novel Viewer.</p>
 
+![](https://img.shields.io/github/package-json/v/asadahimeka/pixiv-viewer)
+![](https://img.shields.io/badge/license-MIT-green)
+![](https://api.netlify.com/api/v1/badges/84d224a8-1630-4f47-94c2-ffb0e6da920a/deploy-status)
+![](https://img.shields.io/github/package-json/dependency-version/asadahimeka/pixiv-viewer/vue)
+![](https://img.shields.io/github/package-json/dependency-version/asadahimeka/pixiv-viewer/dev/@vue/cli-service)
+![](https://img.shields.io/github/package-json/dependency-version/asadahimeka/pixiv-viewer/vant)
+
 中文 | [English](./docs/README.en.md)
 
 预览: 🔗 [pixiv.pics](https://pixiv.pics)
@@ -11,7 +18,7 @@
 
 ## Features
 - [x] 首页
-  - [x] 插画/漫画/小说
+  - [x] 插画/漫画/小说/直播
   - [x] 排行榜/特辑/推荐/发现/新作
   - [x] 随便看看
 - [x] 搜索功能(插画·漫画/小说/用户)
@@ -47,11 +54,12 @@
   - [x] AppAPI 代理服务
   - [x] 列表图片长按下载
   - [x] 列表图片长按屏蔽
+  - [x] pximg 图片直连模式
 - [x] 作品页面
   - [x] 插画收藏/取消收藏/下载/查看评论/分享
   - [x] 源站链接/ID 复制
   - [x] 动图播放
-  - [x] 动图下载(ZIP/GIF/WebM)
+  - [x] 动图下载(ZIP/GIF/WebM/MP4)
   - [x] 小说下载
   - [x] 小说阅读设置(字体/颜色/方向等)
 - [x] 作者信息页面
@@ -63,10 +71,12 @@
 - [x] 本地 IndexedDB 缓存存储
 - [x] 多端样式适配
 - [x] PWA 支持
+- [x] Android/Windows 版本
+- [x] iOS/macOS 版本
 
 ## Feedback
 
-https://github.com/asadahimeka/pixiv-viewer/issues
+https://github.com/asadahimeka/pixiv-viewer/discussions
 
 ## Preview
 
@@ -97,7 +107,6 @@ https://github.com/asadahimeka/pixiv-viewer/issues
 - [PixivNow](https://now.pixiv.pics/ranking)
 - [PixivMoe](https://moe.pixiv.pics)
 - [PixivLxns](https://lxns.pixiv.pics)
-- [PIXID](https://pixid.top/ranking.php)
 - [pixivic](https://pixivic.com)
 - [vilipix](https://www.vilipix.com/ranking)
 - [moeview](https://moeview.pixiv.pics)
@@ -106,22 +115,22 @@ https://github.com/asadahimeka/pixiv-viewer/issues
 
 ## Project setup
 ```
-yarn install
+pnpm install
 ```
 
 ### Compiles and hot-reloads for development
 ```
-yarn serve
+pnpm serve
 ```
 
 ### Compiles and minifies for production
 ```
-yarn build
+pnpm build
 ```
 
 ### Lints and fixes files
 ```
-yarn lint
+pnpm lint
 ```
 
 ### Customize configuration
@@ -131,7 +140,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### 自建的话如何预设图床与 API 实例
 
-参照 [#2](https://github.com/asadahimeka/pixiv-viewer/issues/2) 与 [#5](https://github.com/asadahimeka/pixiv-viewer/issues/5) 设置环境变量。可以在项目根目录下新建 `.env` 文件，按如下格式填入环境变量：
+参照 [#10](https://github.com/asadahimeka/pixiv-viewer/discussions/10) 与 [#13](https://github.com/asadahimeka/pixiv-viewer/discussions/13) 设置环境变量。可以在项目根目录下新建 `.env` 文件，按如下格式填入环境变量：
 
 ```env
 TEST="lalala"
@@ -150,17 +159,28 @@ ABC=DEF
 
 受限于网络环境，图片加载速度可能会比较慢。可以到设置里切换图床，或者下载 Android 版本后打开图片直连功能
 
+### 使用美国/英国 IP 无法查看某些作品
+
+见 pixiv 官方公告：https://www.pixiv.net/info.php?id=10837
+
+建议用自己的账号登录本站后再使用，并且要在官方网页端[设置](https://www.pixiv.net/setting_user.php)里面选择非美国/英国的地区，最好选择日区。
+
+### 列表与详情图片不匹配或重复、搜索结果与搜索标签不匹配
+
+是因为自建 API 的 CDN 缓存导致的，可以到设置里切换其他 API 实例或者登录后再使用
+
 ### Cookie/SessionID 登录出错
 
 建议使用 RefreshToken 方式登录
 
-### 是否有 iOS App
-
-目前只有 Android 与 Windows 版本，均为 Webview 套壳，下载：[Releases](https://github.com/asadahimeka/pixiv-viewer/releases)
-
 ### Android 版本点击下载就闪退
 
 到系统设置里给予本应用存储权限，或者下载最新版本后再进行尝试
+
+### 是否有 iOS App
+
+可到 [Github Releases](https://github.com/asadahimeka/pixiv-viewer/releases) 下载，注意 iOS 安装包未签名，需要自行签名侧载安装，教程：[爱思助手(视频)](https://www.bilibili.com/video/BV1Jg4y1n7hi/)、[爱思助手](https://www.i4.cn/news_detail_38195.html)、[AltStore](https://kerrinz.com/archives/432.html)
+
 
 ## Contribute
 
@@ -171,12 +191,21 @@ ABC=DEF
 - [Vue](https://vuejs.org/)：前端框架
 - [Vant UI](https://vant-ui.github.io/vant/v2/#/zh-CN/)：UI 组件库
 - [Vue I18n](https://kazupon.github.io/vue-i18n/)：国际化支持
-- [HibiAPI](https://api.obfs.dev/docs)：提供大部分接口支持
+- [HibiAPI](https://github.com/mixmoe/HibiAPI)：提供大部分接口支持
+- [Pixiv.cat](https://pixiv.re/)：图像反代服务
 - [PixivNow](https://github.com/FreeNowOrg/PixivNow)：提供部分网页版接口支持
 - [SauceNAO](https://saucenao.com/)：以图搜图功能接口
 - [Cloudflare Workers](https://workers.cloudflare.com/)：图像反代服务
-- [Vercel](https://vercel.com/)：提供页面托管服务
+- [Netlify](https://netlify.com/)：提供页面托管服务
+
+## Disclaimer
+
+本项目与 pixiv.net(ピクシブ株式会社) 无任何隶属关系。
+
+本项目网站、APP 所展示的所有作品的版权均为 Pixiv 或其原作者所有。
+
+本项目仅供交流与学习，不得用于任何商业用途。
 
 ## LICENSE
 
-[![MIT License Copyright (c) 2020 Jad](https://img.shields.io/github/license/journey-ad/pixiv-viewer)](https://github.com/asadahimeka/pixiv-viewer/blob/master/LICENSE)
+[![MIT License](https://img.shields.io/github/license/asadahimeka/pixiv-viewer)](https://github.com/asadahimeka/pixiv-viewer/blob/master/LICENSE)

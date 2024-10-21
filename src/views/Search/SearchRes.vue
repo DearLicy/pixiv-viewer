@@ -346,9 +346,9 @@ export default {
       }
       if (this.usersIriTag) val += ' ' + this.usersIriTag
       const params = _.pickBy(this.searchParams, Boolean)
-      if (!this.$store.state.SETTING.ai) {
-        params.search_ai_type = 0
-      }
+      // if (!this.$store.state.SETTING.ai) {
+      //   params.search_ai_type = 0
+      // }
       this.loading = true
       const res = await api.search(val, this.curPage, params)
       if (res.status === 0) {
@@ -516,7 +516,7 @@ export default {
       height: 120px;
       padding-top 0.133rem
       padding-bottom 0
-      backdrop-filter: saturate(200%) blur(6px);
+      backdrop-filter: saturate(200%) blur(10PX);
       background: rgba(255, 255, 255, 0.8);
 
       ::v-deep .van-cell {
@@ -643,7 +643,7 @@ export default {
     top 120px
     margin-bottom 0
     padding 0px 0px 20px
-    backdrop-filter: saturate(200%) blur(6px);
+    backdrop-filter: saturate(200%) blur(10PX);
     background: rgba(255, 255, 255, 0.8);
   }
 

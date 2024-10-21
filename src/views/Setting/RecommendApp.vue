@@ -65,6 +65,13 @@
     />
     <van-cell
       center
+      title="Boorusama (Android)"
+      is-link
+      label="A mobile client for booru sites built with Flutter"
+      @click="openLink('https://github.com/khoadng/Boorusama')"
+    />
+    <van-cell
+      center
       title="JHenTai (Android,iOS,Linux,macOS,Windows)"
       is-link
       label="A cross-platform app made for e-hentai & exhentai by Flutter."
@@ -135,6 +142,20 @@
     />
     <van-cell
       center
+      title="kobi ( Android,iOS,macOS,Windows,Linux)"
+      is-link
+      label="拷贝漫画客户端"
+      @click="openLink('https://github.com/Predidit/Kazumi')"
+    />
+    <van-cell
+      center
+      title="HamsterHelper (Windows)"
+      is-link
+      label="仓鼠助手,p站pixiv图片下载收藏管理器"
+      @click="openLink('https://github.com/HamsterHelper/HamsterHelper')"
+    />
+    <van-cell
+      center
       title="Neko Anime (Android)"
       is-link
       label="一个可以在线看番的 Android App."
@@ -146,6 +167,34 @@
       is-link
       label="纯纯看番，使用 Compose 开发的看番软件，支持多番剧源"
       @click="openLink('https://easybangumi.org/')"
+    />
+    <van-cell
+      center
+      title="ani (Android,iOS,Linux,macOS,Windows)"
+      is-link
+      label="集找番、追番、看番的一站式弹幕追番平台"
+      @click="openLink('https://github.com/open-ani/ani')"
+    />
+    <van-cell
+      center
+      title="Aniyomi (Android)"
+      is-link
+      label="Full-featured player and reader, based on Tachiyomi."
+      @click="openLink('https://aniyomi.org/')"
+    />
+    <van-cell
+      center
+      title="KNKPAnime (Android,Windows)"
+      is-link
+      label="支持多番剧源与弹幕的看番软件。"
+      @click="openLink('https://github.com/KNKPA/KNKPAnime')"
+    />
+    <van-cell
+      center
+      title="Kazumi (Android,Windows)"
+      is-link
+      label="基于自定义规则的番剧采集APP，支持流媒体在线观看，支持弹幕。"
+      @click="openLink('https://github.com/Predidit/Kazumi')"
     />
     <van-cell
       center

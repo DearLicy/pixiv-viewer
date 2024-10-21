@@ -226,7 +226,7 @@
     "other": {
       "lang": "Langue",
       "lang_ph": "Veuillez sélectionner la langue",
-      "title": "Autres réglages",
+      "title": "Préférences",
       "manual_input_label": "Si les adresses de proxy et d'instance d'API des images ci-dessous sont saisies manuellement",
       "manual_input": "Saisissez manuellement le lien proxy/API",
       "api_proxy": {
@@ -409,5 +409,28 @@
   "a1HSQm-WYv6GDFwhKr9x_": "Les paramètres seront réinitialisés après le nettoyage",
   "LC7_PMpEgK-L5fx7s4TBv": "Télécharger sur ugoira.com",
   "mR4YFHYUnr00zmzYydrMv": "Faire en sorte que la liste d'images remplisse l'écran",
-  "V-KoSeNoEiNct7oZJgCcD": "La désactivation de ce commutateur définira la largeur maximale de la liste d'images"
+  "V-KoSeNoEiNct7oZJgCcD": "La désactivation de ce commutateur définira la largeur maximale de la liste d'images",
+  "g4JWYmBbfeweCBkRSgGNw": "Lives",
+  "qzuDyLgl-y1tIhY0Dc_6s": "Lives",
+  "bJ1fo_0HLdA1bWDIic_CT": "Pour votre information",
+  "fSITk3ygQ7rxjm0lDUoSV": "Il y a une probabilité de {0} % que ce travail ait été généré par l'IA.",
+  "Wc3yMDMSkHUhoGx22bsP8": "Importer les configurations",
+  "Bi5BpYwKhUhWcm_RueGZN": "Paramètres d'exportation",
+  "psoXLFqv51j1SeKjTbnms": "Couleur primaire",
+  "lGZGzwfWz9tW_KQey3AmQ": "Activer le mode de connexion directe de l'image pximg",
+  "nTsgCnGYm8FSVMfe-TQSN": "Confirmer pour activer le mode direct pximg ?",
+  "YeEO8hAsoM45pm_vcijKP": "Le mode de connexion directe pximg nécessite que Tampermonkey et Helper userscript soient installés, et la vitesse peut être plus lente et la stabilité n'est pas garantie.",
+  "9omPI2Fz4KzKSVNlmF8-K": "Échec : le script utilisateur Tampermonkey ou Helper n'est pas installé.",
+  "2jNIricwtCbrzEESdEbvH": "Cliquer pour installer",
+  "lkfd4SXJiefx26Z7vj0Au": "Lien du script utilisateur d'assistance",
+  "hGqGftQ7v772prEac1hbJ": "Commentaire",
+  "1V8tlBs--oNk_UbzsItA-": "Site alternatif",
+  "vqHSGcz4r3oSQIWQwZiVf": "Personne n'a encore commenté~",
+  "0CDMRP9wSGJQTyMbvrM8z": "Afficher les réponses",
+  "qLUWER5bf4X2lE0RjKTBj": "Utilisez Fancybox pour afficher l'image originale sur la page de détails",
+  "k0V0c1MNZGYs9MCqjx8QL": "ID de session invalide",
+  "3UCLxnEsirUQvP_xv4po4": "Erreur de format du jeton d'accès",
+  "QRASoWf3qDfwihoIa84C9": "Non disponible avec blocage par appui long",
+  "NgE24V8lvXN2c15W_2gnE": "Un appui long peut bloquer l'auteur ou la balise et ne peut pas être utilisé avec un appui long pour télécharger.",
+  "WdS4RTIeeWqdaqLtvk7ZO": "Placez le titre de l'image et l'auteur sous la fiche image. Cliquez sur le titre pour prévisualiser l'image."
 }

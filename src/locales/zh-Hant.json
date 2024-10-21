@@ -226,7 +226,7 @@
     "other": {
       "lang": "語言",
       "lang_ph": "請選擇語言",
-      "title": "其他設置",
+      "title": "偏好設定",
       "manual_input": "手動輸入代理/API鏈接",
       "manual_input_label": "下方圖片代理與 API 實例地址是否手動輸入",
       "api_proxy": {
@@ -409,5 +409,28 @@
   "a1HSQm-WYv6GDFwhKr9x_": "清理後設定項目將重置",
   "LC7_PMpEgK-L5fx7s4TBv": "從 ugoira.com 下載",
   "mR4YFHYUnr00zmzYydrMv": "圖片清單鋪滿螢幕",
-  "V-KoSeNoEiNct7oZJgCcD": "關閉此開關會為圖片清單設定最大寬度"
+  "V-KoSeNoEiNct7oZJgCcD": "關閉此開關會為圖片清單設定最大寬度",
+  "g4JWYmBbfeweCBkRSgGNw": "直播",
+  "qzuDyLgl-y1tIhY0Dc_6s": "人氣直播",
+  "bJ1fo_0HLdA1bWDIic_CT": "結果僅供參考",
+  "fSITk3ygQ7rxjm0lDUoSV": "此作品有 {0}% 的可能性是由 AI 產生的。",
+  "Wc3yMDMSkHUhoGx22bsP8": "導入設定",
+  "Bi5BpYwKhUhWcm_RueGZN": "匯出設定",
+  "psoXLFqv51j1SeKjTbnms": "應用主題色",
+  "lGZGzwfWz9tW_KQey3AmQ": "啟用 pximg 圖片直連模式",
+  "nTsgCnGYm8FSVMfe-TQSN": "確認啟用 pximg 直連模式？",
+  "YeEO8hAsoM45pm_vcijKP": "pximg 直連模式需確保 Tampermonkey 與 Helper 腳本已安裝，且速度可能較慢、不保證穩定性。",
+  "9omPI2Fz4KzKSVNlmF8-K": "Tampermonkey 或 Helper 腳本未安裝，啟用失敗",
+  "2jNIricwtCbrzEESdEbvH": "點選安裝",
+  "lkfd4SXJiefx26Z7vj0Au": "Helper 腳本地址",
+  "hGqGftQ7v772prEac1hbJ": "評論",
+  "1V8tlBs--oNk_UbzsItA-": "備用域名",
+  "vqHSGcz4r3oSQIWQwZiVf": "還沒有人發表評論呢~",
+  "0CDMRP9wSGJQTyMbvrM8z": "查看回覆",
+  "qLUWER5bf4X2lE0RjKTBj": "詳情頁使用 Fancybox 查看原圖",
+  "k0V0c1MNZGYs9MCqjx8QL": "無效的session ID",
+  "3UCLxnEsirUQvP_xv4po4": "存取令牌格式錯誤",
+  "QRASoWf3qDfwihoIa84C9": "不可與長按屏蔽一起使用",
+  "NgE24V8lvXN2c15W_2gnE": "長按可屏蔽作者或標籤，不可與長按下載一起使用",
+  "WdS4RTIeeWqdaqLtvk7ZO": "將圖片標題與作者置於圖片卡下方，點選標題可預覽圖片"
 }

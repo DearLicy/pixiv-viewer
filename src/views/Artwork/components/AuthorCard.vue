@@ -7,7 +7,7 @@
 
     <van-cell class="cell" :border="false" is-link @click="toAuthor(author.id)">
       <template #title>
-        <img class="icon" :src="author.avatar" alt="">
+        <Pximg nobg class="icon" :src="author.avatar" alt="" />
         <span class="title">{{ author.name }} {{ $t('user.of_other_art') }}</span>
       </template>
     </van-cell>
@@ -41,6 +41,7 @@ import ImageCard from '@/components/ImageCard'
 import ImageSlide from '@/components/ImageSlide'
 import { mapActions, mapGetters } from 'vuex'
 import api from '@/api'
+import { isAiIllust } from '@/utils/filter'
 export default {
   components: {
     ImageCard,
@@ -88,6 +89,9 @@ export default {
     },
     ...mapGetters(['isCensored']),
   },
+  activated() {
+    this.checkAiAuthor()
+  },
   mounted() {
     this.init()
   },
@@ -100,7 +104,8 @@ export default {
       const res = await api.getMemberArtwork(id)
       if (res.status === 0) {
         this.memberArtwork = res.data
-        this.$emit('loaded')
+        this.checkAiAuthor()
+        // this.$emit('loaded')
         const i = res.data.findIndex(e => e.id == this.$route.params.id)
         i && this.$nextTick(() => {
           this.$refs.mySwiper?.$swiper?.slideTo(i)
@@ -111,6 +116,11 @@ export default {
           icon: require('@/icons/error.svg'),
         })
       }
+    },
+    checkAiAuthor() {
+      const { length } = (this.memberArtwork || []).filter(isAiIllust)
+      console.log('----------------ai arts: ', length)
+      this.$emit('author-change', length >= 5)
     },
     toArtwork(id) {
       this.setGalleryList(this.memberArtwork)

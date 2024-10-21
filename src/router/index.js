@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import nprogress from 'nprogress'
 import { LocalStorage } from '@/utils/storage'
+import { BASE_URL } from '@/consts'
 
 import BaseLayout from '@/layouts/BaseLayout.vue'
 import MainLayout from '@/layouts/MainLayout.vue'
@@ -9,6 +10,8 @@ import MainLayout from '@/layouts/MainLayout.vue'
 import Home from '@/views/Home/index.vue'
 import HomeManga from '@/views/Home/HomeManga.vue'
 import HomeNovel from '@/views/Home/HomeNovel.vue'
+import Lives from '@/views/Lives/index.vue'
+import LiveDetail from '@/views/Lives/LiveDetail.vue'
 import Discovery from '@/views/Discovery/Discovery.vue'
 import RecommendIllust from '@/views/Discovery/RecommendIllust.vue'
 import Spotlights from '@/views/Spotlights/Spotlights.vue'
@@ -31,6 +34,7 @@ import SettingAbout from '@/views/Setting/About.vue'
 import SettingFAQ from '@/views/Setting/FAQ.vue'
 import SettingDisclaimer from '@/views/Setting/Disclaimer.vue'
 import SettingDownApp from '@/views/Setting/DownloadApp.vue'
+import SettingAccentColor from '@/views/Setting/AccentColor.vue'
 import Recommend from '@/views/Setting/Recommend.vue'
 import Artwork from '@/views/Artwork/index.vue'
 import Novel from '@/views/Artwork/Novel.vue'
@@ -63,6 +67,7 @@ const routes = [
             name: 'Home',
             component: Home,
             meta: { __depth: 1 },
+            alias: ['/home', '/index', '/index.html'],
           },
           {
             path: '/home_manga',
@@ -261,6 +266,12 @@ const routes = [
             meta: { __depth: 2 },
           },
           {
+            path: '/setting/accent_color',
+            name: 'SettingAccentColor',
+            component: SettingAccentColor,
+            meta: { __depth: 2 },
+          },
+          {
             path: '/discovery',
             name: 'Discovery',
             component: Discovery,
@@ -311,6 +322,18 @@ const routes = [
             component: OAuthCallback,
             meta: { __depth: 1 },
           },
+          {
+            path: '/lives',
+            name: 'Lives',
+            component: Lives,
+            meta: { __depth: 2 },
+          },
+          {
+            path: '/live/:id',
+            name: 'LiveDetail',
+            component: LiveDetail,
+            meta: { __depth: 3 },
+          },
         ],
       },
     ],
@@ -327,7 +350,7 @@ const isPageEffectOn = LocalStorage.get('PXV_PAGE_EFFECT', false)
 const router = new VueRouter({
   routes,
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: BASE_URL,
   scrollBehavior(_, __, pos) {
     console.log('pos: ', pos)
     if (isPageEffectOn) {

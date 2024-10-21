@@ -319,7 +319,7 @@
       "manual_input": "Ingrese manualmente el enlace proxy/API",
       "manual_input_label": "Si las direcciones de instancia de API y proxy de las imágenes siguientes se ingresan manualmente",
       "swipe_toggle": "Deslícese hacia la izquierda o hacia la derecha en la página de detalles para alternar obras de arte",
-      "title": "Otros ajustes"
+      "title": "Preferencias"
     },
     "recomm": {
       "app": "Aplicaciones",
@@ -409,5 +409,28 @@
   "a1HSQm-WYv6GDFwhKr9x_": "La configuración se restablecerá después de la limpieza.",
   "LC7_PMpEgK-L5fx7s4TBv": "Descargar desde ugoira.com",
   "mR4YFHYUnr00zmzYydrMv": "Haz que la lista de imágenes llene la pantalla",
-  "V-KoSeNoEiNct7oZJgCcD": "Al desactivar este interruptor se establecerá el ancho máximo para la lista de imágenes."
+  "V-KoSeNoEiNct7oZJgCcD": "Al desactivar este interruptor se establecerá el ancho máximo para la lista de imágenes.",
+  "g4JWYmBbfeweCBkRSgGNw": "Lives",
+  "qzuDyLgl-y1tIhY0Dc_6s": "Lives",
+  "bJ1fo_0HLdA1bWDIic_CT": "Para tu información",
+  "fSITk3ygQ7rxjm0lDUoSV": "Existe un {0} % de probabilidad de que este trabajo haya sido generado por IA.",
+  "Wc3yMDMSkHUhoGx22bsP8": "Importar ajustes",
+  "Bi5BpYwKhUhWcm_RueGZN": "Exportar configuración",
+  "psoXLFqv51j1SeKjTbnms": "Color primario",
+  "lGZGzwfWz9tW_KQey3AmQ": "Habilitar el modo de conexión directa de imagen pximg",
+  "nTsgCnGYm8FSVMfe-TQSN": "¿Confirmar para habilitar el modo directo pxig?",
+  "YeEO8hAsoM45pm_vcijKP": "El modo de conexión directa de pximg requiere que Tampermonkey y el script de usuario Helper estén instalados, y la velocidad puede ser más lenta y la estabilidad no está garantizada.",
+  "9omPI2Fz4KzKSVNlmF8-K": "Error: Tampermonkey o el script de usuario auxiliar no están instalados.",
+  "2jNIricwtCbrzEESdEbvH": "Haga clic para instalar",
+  "lkfd4SXJiefx26Z7vj0Au": "Enlace de script de usuario auxiliar",
+  "hGqGftQ7v772prEac1hbJ": "Comentario",
+  "1V8tlBs--oNk_UbzsItA-": "Sitio alternativo",
+  "vqHSGcz4r3oSQIWQwZiVf": "Nadie ha comentado todavía ~",
+  "0CDMRP9wSGJQTyMbvrM8z": "Ver respuestas",
+  "qLUWER5bf4X2lE0RjKTBj": "Utilice Fancybox para ver la imagen original en la página de detalles",
+  "k0V0c1MNZGYs9MCqjx8QL": "ID de sesión no válido",
+  "3UCLxnEsirUQvP_xv4po4": "Error de formato del token de acceso",
+  "QRASoWf3qDfwihoIa84C9": "No disponible con bloqueo de pulsación larga",
+  "NgE24V8lvXN2c15W_2gnE": "Una pulsación larga puede bloquear el autor o la etiqueta y no se puede utilizar junto con una pulsación larga para descargar.",
+  "WdS4RTIeeWqdaqLtvk7ZO": "Coloque el título de la imagen y el autor debajo de la tarjeta de la imagen. Haga clic en el título para obtener una vista previa de la imagen."
 }

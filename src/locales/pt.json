@@ -319,7 +319,7 @@
       "manual_input": "Insira manualmente o link proxy/API",
       "manual_input_label": "Se os endereços de proxy e de instância de API das imagens abaixo são inseridos manualmente",
       "swipe_toggle": "Deslize para a esquerda ou para a direita na página de detalhes para alternar as obras de arte",
-      "title": "Outros ajustes"
+      "title": "Preferências"
     },
     "recomm": {
       "app": "Aplicativos",
@@ -409,5 +409,28 @@
   "a1HSQm-WYv6GDFwhKr9x_": "As configurações serão redefinidas após a limpeza",
   "LC7_PMpEgK-L5fx7s4TBv": "Baixe em ugoira.com",
   "mR4YFHYUnr00zmzYydrMv": "Faça a lista de imagens preencher a tela",
-  "V-KoSeNoEiNct7oZJgCcD": "Desativar esta opção definirá a largura máxima da lista de imagens"
+  "V-KoSeNoEiNct7oZJgCcD": "Desativar esta opção definirá a largura máxima da lista de imagens",
+  "g4JWYmBbfeweCBkRSgGNw": "Lives",
+  "qzuDyLgl-y1tIhY0Dc_6s": "Lives",
+  "bJ1fo_0HLdA1bWDIic_CT": "Para a sua informação",
+  "fSITk3ygQ7rxjm0lDUoSV": "Há uma probabilidade de {0}% de que este trabalho tenha sido gerado por IA.",
+  "Wc3yMDMSkHUhoGx22bsP8": "Configurações de Importação",
+  "Bi5BpYwKhUhWcm_RueGZN": "Exportar configurações",
+  "psoXLFqv51j1SeKjTbnms": "Cor primária",
+  "lGZGzwfWz9tW_KQey3AmQ": "Ativar modo de conexão direta de imagem pximg",
+  "nTsgCnGYm8FSVMfe-TQSN": "Confirmar para ativar o modo direto pximg?",
+  "YeEO8hAsoM45pm_vcijKP": "O modo de conexão direta pximg requer que o Tampermonkey e o script de usuário Helper estejam instalados, e a velocidade pode ser mais lenta e a estabilidade não é garantida.",
+  "9omPI2Fz4KzKSVNlmF8-K": "Falha: Tampermonkey ou Helper userscript não está instalado.",
+  "2jNIricwtCbrzEESdEbvH": "Clique para instalar",
+  "lkfd4SXJiefx26Z7vj0Au": "Link de script de usuário auxiliar",
+  "hGqGftQ7v772prEac1hbJ": "Comente",
+  "1V8tlBs--oNk_UbzsItA-": "Site alternativo",
+  "vqHSGcz4r3oSQIWQwZiVf": "Ninguém comentou ainda~",
+  "0CDMRP9wSGJQTyMbvrM8z": "Ver respostas",
+  "qLUWER5bf4X2lE0RjKTBj": "Use o Fancybox para visualizar a imagem original na página de detalhes",
+  "k0V0c1MNZGYs9MCqjx8QL": "ID de sessão inválido",
+  "3UCLxnEsirUQvP_xv4po4": "Erro no formato do token de acesso",
+  "QRASoWf3qDfwihoIa84C9": "Não disponível com bloqueio de toque longo",
+  "NgE24V8lvXN2c15W_2gnE": "Um toque longo pode bloquear o autor ou tag e não pode ser usado junto com um toque longo para fazer download.",
+  "WdS4RTIeeWqdaqLtvk7ZO": "Coloque o título e o autor da imagem abaixo do cartão de imagem. Clique no título para visualizar a imagem."
 }

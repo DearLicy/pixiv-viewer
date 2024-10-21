@@ -40,28 +40,28 @@ const HASH_SECRET = '28c1fdd170a5204386cb1313c7077b34f83e4aaf4aa829ce78c231e05b0
 
 const DEFAULT_HEADERS = {
   'App-OS': 'Android',
-  'App-OS-Version': 'Android 13.0',
-  'App-Version': '6.100.0',
+  'App-OS-Version': 'Android 14.0',
+  'App-Version': '6.124.0',
   'Accept-Language': 'zh-CN',
-  'User-Agent': 'PixivAndroidApp/6.100.0 (Android 13.0; Pixel 7)',
+  'User-Agent': 'PixivAndroidApp/6.124.0 (Android 14.0; Pixel 8)',
 }
 
 function callApi(url, options) {
   let finalUrl = /^https?:\/\//i.test(url) ? url : BASE_URL + url
   const fUrl = new URL(finalUrl)
-  if (globalThis.p_api_proxy) {
+  if (window.p_api_proxy) {
     if (BASE_URL.includes(fUrl.hostname)) {
       fUrl.pathname = '/pixiv-app-api' + fUrl.pathname
     }
     if (OAUTH_URL.includes(fUrl.hostname)) {
       fUrl.pathname = '/pixiv-oauth' + fUrl.pathname
     }
-    fUrl.hostname = globalThis.p_api_proxy
+    fUrl.hostname = window.p_api_proxy
     finalUrl = fUrl.href
-  } else if (globalThis.__httpRequest__) {
-    if (globalThis.p_api_hosts) {
+  } else if (window.__httpRequest__) {
+    if (window.p_api_hosts) {
       options.headers.Host = fUrl.host
-      fUrl.hostname = globalThis.p_api_hosts[fUrl.hostname]
+      fUrl.host = window.p_api_hosts[fUrl.hostname]
       finalUrl = fUrl.href
     }
   } else {
@@ -71,8 +71,8 @@ function callApi(url, options) {
   console.log('callApi options: ', options)
 
   let resp
-  if (globalThis.__httpRequest__) {
-    resp = globalThis.__httpRequest__(finalUrl, JSON.stringify(options))
+  if (window.__httpRequest__) {
+    resp = window.__httpRequest__(finalUrl, JSON.stringify(options))
   } else {
     resp = axios(finalUrl, options)
   }
@@ -93,7 +93,7 @@ function callApi(url, options) {
 class PixivApi {
   constructor() {
     this.headers = { ...DEFAULT_HEADERS }
-    if (!globalThis.__httpRequest__) delete this.headers['User-Agent']
+    if (!window.__httpRequest__) delete this.headers['User-Agent']
     const auth = LocalStorage.get('PXV_CLIENT_AUTH')
     if (auth) this.auth = auth
   }
@@ -524,19 +524,14 @@ class PixivApi {
     return this.requestUrl(`/v2/illust/comment/replies?${queryString}`)
   }
 
-  illustRelated(id, options) {
+  illustRelated(id, options = {}) {
     if (!id) {
       return Promise.reject(new Error('illust_id required'))
     }
 
-    const queryString = qs.stringify(
-      Object.assign(
-        {
-          illust_id: id,
-        },
-        options
-      )
-    )
+    const { nextUrl } = options
+    delete options.nextUrl
+    const queryString = nextUrl || qs.stringify(Object.assign({ illust_id: id }, options))
     return this.requestUrl(`/v2/illust/related?${queryString}`)
   }
 
@@ -1098,6 +1093,18 @@ class PixivApi {
     }
     const queryString = qs.stringify({ illust_id: id })
     return this.requestUrl(`/v1/ugoira/metadata?${queryString}`)
+  }
+
+  liveList(options) {
+    const queryString = qs.stringify(
+      Object.assign(
+        {
+          list_type: 'popular',
+        },
+        options
+      )
+    )
+    return this.requestUrl(`/v1/live/list?${queryString}`)
   }
 }
 

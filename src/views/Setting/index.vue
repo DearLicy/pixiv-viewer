@@ -1,6 +1,6 @@
 <template>
   <div class="setting">
-    <h1 class="app-title">
+    <h1 class="app-title" @click="$router.push('/setting/accent_color')">
       <img v-if="!isLoggedIn" src="/app-icon.png" alt="">
       <div class="app-title-desc">
         <span class="title-font">Pixiv Viewer<sup style="margin-left: 5px;font-size: 0.3rem;">Kai</sup></span>
@@ -19,7 +19,7 @@
     <van-cell v-if="isLoggedIn" size="large" center is-link :to="`/u/${user.id}`">
       <template #title>
         <div class="user_data">
-          <img v-lazy="user.profileImg" width="50" height="50" alt="">
+          <Pximg :src="user.profileImg" nobg width="50" height="50" alt="" />
           <div>
             <div>{{ user.name }}</div>
             <div style="color: #999">@{{ user.pixivId }}</div>
@@ -48,7 +48,7 @@ import { Dialog } from 'vant'
 import dayjs from 'dayjs'
 import PixivAuth from '@/api/client/pixiv-auth'
 import { logout } from '@/api/user'
-import { NOTICES_JSON } from '@/consts'
+import { LocalStorage } from '@/utils/storage'
 
 export default {
   name: 'Setting',
@@ -66,15 +66,18 @@ export default {
     ...mapState(['user']),
     ...mapGetters(['isLoggedIn']),
   },
-  created() {
+  async created() {
     try {
-      const notices = JSON.parse(NOTICES_JSON)
+      const notices = await fetch('https://pxve-notice.nanoka.top').then(r => r.json())
       const today = dayjs().startOf('day')
       this.notice = notices.find(e =>
         today.isAfter(dayjs(e.start).startOf('day') - 1) &&
         today.isBefore(dayjs(e.end).endOf('day'))
       )
       console.log('this.notice: ', this.notice)
+      if (this.notice?.style) {
+        document.head.insertAdjacentHTML('beforeend', `<style>${this.notice.style}</style>`)
+      }
     } catch (err) {
       console.log('err: ', err)
     }
@@ -84,6 +87,7 @@ export default {
       if (window.APP_CONFIG.useLocalAppApi) {
         const res = await Dialog.confirm({ message: this.$t('login.logout_tip') })
         if (res != 'confirm') return
+        LocalStorage.remove('PXV_CLIENT_AUTH')
         window.APP_CONFIG.useLocalAppApi = false
         PixivAuth.writeConfig(window.APP_CONFIG)
         setTimeout(() => {

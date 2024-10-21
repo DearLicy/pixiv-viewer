@@ -1,13 +1,39 @@
 <template>
   <div class="setting-page">
     <top-bar id="top-bar-wrap" />
-    <h3 class="af_title" @dblclick="hideApSelect=false">{{ $t('setting.other.title') }}</h3>
+    <h3 class="af_title">{{ $t('setting.other.title') }}</h3>
     <van-cell center :title="$t('setting.other.lang')" is-link :label="lang.value" @click="lang.show = true" />
     <van-cell center :title="$t('setting.layout.title')" is-link :label="wfType.value" @click="wfType.show = true" />
     <van-cell center :title="$t('setting.img_res.title')" is-link :label="imgRes.value" @click="imgRes.show = true" />
+    <van-cell center :title="$t('psoXLFqv51j1SeKjTbnms')" is-link :label="`${accentColor} ${actTheme}`" to="/setting/accent_color" />
     <van-cell center :title="$t('setting.dark.title')" :label="$t('setting.lab.title')">
       <template #right-icon>
         <van-switch :value="isDark" size="24" @change="onDarkChange" />
+      </template>
+    </van-cell>
+    <van-cell center :title="$t('5syY7l774noiN5LHKUnqF')" :label="$t('QRASoWf3qDfwihoIa84C9')">
+      <template #right-icon>
+        <van-switch :disabled="isLongpressBlock" :value="isLongpressDL" size="24" @change="changeLongpressDL" />
+      </template>
+    </van-cell>
+    <van-cell center :title="$t('kFOiZTwKWwXy-sxaspqSD')" :label="$t('NgE24V8lvXN2c15W_2gnE')">
+      <template #right-icon>
+        <van-switch :disabled="isLongpressDL" :value="isLongpressBlock" size="24" @change="changeLongpressBlock" />
+      </template>
+    </van-cell>
+    <van-cell center :title="$t('ZO7u4XT4flW6_nmyvmXt7')" :label="$t('WdS4RTIeeWqdaqLtvk7ZO')">
+      <template #right-icon>
+        <van-switch :value="isImageCardOuterMeta" size="24" @change="changeImageCardOuterMeta" />
+      </template>
+    </van-cell>
+    <van-cell center :title="$t('mR4YFHYUnr00zmzYydrMv')" :label="$t('V-KoSeNoEiNct7oZJgCcD')">
+      <template #right-icon>
+        <van-switch :value="isImageFitScreen" size="24" @change="changeImageFitScreen" />
+      </template>
+    </van-cell>
+    <van-cell center :title="$t('qLUWER5bf4X2lE0RjKTBj')" :label="$t('setting.lab.title')">
+      <template #right-icon>
+        <van-switch :value="useFancybox" size="24" @change="changeUseFancybox" />
       </template>
     </van-cell>
     <van-cell center :title="$t('setting.other.swipe_toggle')" :label="$t('setting.lab.title')">
@@ -20,35 +46,20 @@
         <van-switch :value="isPageEffectOn" size="24" @change="changePageEffect" />
       </template>
     </van-cell>
-    <van-cell center :title="$t('5syY7l774noiN5LHKUnqF')" :label="$t('setting.lab.title')">
-      <template #right-icon>
-        <van-switch :disabled="isLongpressBlock" :value="isLongpressDL" size="24" @change="changeLongpressDL" />
-      </template>
-    </van-cell>
-    <van-cell center :title="$t('kFOiZTwKWwXy-sxaspqSD')" :label="$t('setting.lab.title')">
-      <template #right-icon>
-        <van-switch :disabled="isLongpressDL" :value="isLongpressBlock" size="24" @change="changeLongpressBlock" />
-      </template>
-    </van-cell>
-    <van-cell center :title="$t('ZO7u4XT4flW6_nmyvmXt7')" :label="$t('setting.lab.title')">
-      <template #right-icon>
-        <van-switch :value="isImageCardOuterMeta" size="24" @change="changeImageCardOuterMeta" />
-      </template>
-    </van-cell>
-    <van-cell center :title="$t('mR4YFHYUnr00zmzYydrMv')" :label="$t('V-KoSeNoEiNct7oZJgCcD')">
-      <template #right-icon>
-        <van-switch :value="isImageFitScreen" size="24" @change="changeImageFitScreen" />
-      </template>
-    </van-cell>
     <van-cell center :title="$t('setting.other.manual_input')" :label="$t('setting.other.manual_input_label')">
       <template #right-icon>
         <van-switch v-model="hideApSelect" size="24" />
       </template>
     </van-cell>
-    <van-cell v-if="hideApSelect" center :title="$t('setting.img_proxy.title')" is-link :label="pximgBed.value" @click="pximgBed.show = true" />
+    <van-cell v-if="hideApSelect && !isDirectPximg" center :title="$t('setting.img_proxy.title')" is-link :label="pximgBed.value" @click="pximgBed.show = true" />
     <van-cell v-if="!appConfig.useLocalAppApi && hideApSelect" center :title="$t('setting.api.title')" is-link :label="hibiapi.value" @click="hibiapi.show = true" />
-    <van-cell v-if="!hideApSelect" center :title="$t('setting.img_proxy.title2')" is-link :label="pximgBedLabel" @click="pximgBed_.show = true" />
+    <van-cell v-if="!hideApSelect && !isDirectPximg" center :title="$t('setting.img_proxy.title2')" is-link :label="pximgBedLabel" @click="pximgBed_.show = true" />
     <van-cell v-if="!appConfig.useLocalAppApi && !hideApSelect" center :title="$t('setting.api.title2')" is-link :label="hibiapiLabel" @click="hibiapi_.show = true" />
+    <van-cell center :title="$t('lGZGzwfWz9tW_KQey3AmQ')" :label="$t('setting.lab.title')">
+      <template #right-icon>
+        <van-switch :value="isDirectPximg" size="24" @change="setDirectPximg" />
+      </template>
+    </van-cell>
     <template v-if="appConfig.useLocalAppApi">
       <van-cell v-if="isHelperInst" center :title="$t('setting.other.direct_mode.title')" :label="$t('setting.other.direct_mode.label')">
         <template #right-icon>
@@ -64,6 +75,8 @@
       <!-- <van-cell v-if="appConfig.directMode" center :title="$t('setting.other.direct_mode.host.title')" is-link :label="$t('setting.other.direct_mode.host.label')" @click="clearApiHosts" /> -->
       <van-cell v-if="appConfig.refreshToken" center :title="$t('setting.other.cp_token_title')" is-link :label="$t('setting.other.cp_token_label')" @click="copyToken" />
     </template>
+    <van-cell center :title="$t('Wc3yMDMSkHUhoGx22bsP8')" is-link :label="$t('setting.lab.title')" @click="importSettings" />
+    <van-cell center :title="$t('Bi5BpYwKhUhWcm_RueGZN')" is-link :label="$t('setting.lab.title')" @click="exportSettings" />
     <van-dialog
       v-model="pximgBed.show"
       width="9rem"
@@ -150,12 +163,13 @@
 
 <script>
 import { Dialog } from 'vant'
+import FileSaver from 'file-saver'
 import PixivAuth from '@/api/client/pixiv-auth'
 import { i18n } from '@/i18n'
-import { checkImgAvailable, checkUrlAvailable, copyText, isURL } from '@/utils'
+import { checkImgAvailable, checkUrlAvailable, copyText, isURL, readTextFile } from '@/utils'
 import { mintVerify } from '@/utils/filter'
 import localDb from '@/utils/storage/localDb'
-import { getCache, setCache } from '@/utils/storage/siteCache'
+// import { getCache, setCache } from '@/utils/storage/siteCache'
 import { LocalStorage, SessionStorage } from '@/utils/storage'
 import { APP_API_PROXYS, DEF_HIBIAPI_MAIN, DEF_PXIMG_MAIN, HIBIAPI_ALTS, PXIMG_PROXYS } from '@/consts'
 
@@ -168,7 +182,7 @@ export default {
       apiProxySel: {
         show: false,
         actions: APP_API_PROXYS.split(',').map((_value, i) => {
-          return { name: `Proxy ${i} (${_value.split(/[.-]/)[0]})`, _value }
+          return { name: `Proxy ${i} (${_value.split('.')[0]})`, _value }
         }),
       },
       pximgBed: {
@@ -210,7 +224,7 @@ export default {
         actions: [
           { name: 'Medium', subname: this.$t('setting.img_res.m') },
           { name: 'Large', subname: this.$t('setting.img_res.l') },
-          { name: 'Original', subname: this.$t('setting.img_res.o') },
+          { name: 'Original', subname: this.$t('setting.img_res.o'), disabled: true },
         ],
       },
       lang: {
@@ -236,11 +250,15 @@ export default {
       hideApSelect: LocalStorage.get('__HIDE_AP_SEL', false),
       isDark: !!localStorage.getItem('PXV_DARK'),
       enableSwipe: LocalStorage.get('PXV_IMG_DTL_SWIPE', false),
+      useFancybox: LocalStorage.get('PXV_USE_FANCYBOX', false),
       isPageEffectOn: LocalStorage.get('PXV_PAGE_EFFECT', false),
       isLongpressDL: LocalStorage.get('PXV_LONGPRESS_DL', false),
       isLongpressBlock: LocalStorage.get('PXV_LONGPRESS_BLOCK', false),
-      isImageCardOuterMeta: LocalStorage.get('PXV_IMG_META_OUTER', false),
+      isImageCardOuterMeta: LocalStorage.get('PXV_IMG_META_OUTER', true),
       isImageFitScreen: LocalStorage.get('PXV_IMG_FIT_SCREEN', true),
+      isDirectPximg: LocalStorage.get('PXV_PXIMG_DIRECT', false),
+      actTheme: localStorage.PXV_THEME || '',
+      accentColor: localStorage.PXV_ACT_COLOR || 'Default',
     }
   },
   head() {
@@ -281,6 +299,26 @@ export default {
         location.reload()
       }, 500)
     },
+    async setDirectPximg(val) {
+      if (val) {
+        const res = await Dialog.confirm({
+          title: this.$t('nTsgCnGYm8FSVMfe-TQSN'),
+          message: `${this.$t('YeEO8hAsoM45pm_vcijKP')}<br><br><p>Tampermonkey: <a href="https://www.tampermonkey.net/" target="_blank" rel="noreferrer">tampermonkey.net</a></p><p>${this.$t('lkfd4SXJiefx26Z7vj0Au')}: <a href="https://fastly.jsdelivr.net/gh/asadahimeka/pixiv-viewer@master/public/helper/helper.user.js" target="_blank" rel="noreferrer">${this.$t('2jNIricwtCbrzEESdEbvH')}</a></p>`,
+          confirmButtonText: this.$t('common.confirm'),
+          cancelButtonText: this.$t('common.cancel'),
+        })
+        if (res == 'cancel') return
+        if (!this.isHelperInst) {
+          Dialog.alert({
+            message: this.$t('9omPI2Fz4KzKSVNlmF8-K'),
+            confirmButtonText: this.$t('common.confirm'),
+          })
+          return
+        }
+      }
+      this.isDirectPximg = val
+      this.saveSetting('PXV_PXIMG_DIRECT', val)
+    },
     async setDirectMode(val) {
       if (val) {
         const res = await Dialog.confirm({
@@ -290,11 +328,12 @@ export default {
           cancelButtonText: this.$t('common.cancel'),
         })
         if (res == 'cancel') return
-        window.umami?.track('setDirectMode')
+        window.umami?.track('setDirectMode', { val })
         this.appConfig.directMode = true
         await this.$nextTick()
         await this.saveConfig()
       } else {
+        window.umami?.track('setDirectMode', { val })
         this.appConfig.directMode = false
         await this.$nextTick()
         await this.saveConfig()
@@ -347,7 +386,6 @@ export default {
     async changePximgBed() {
       const url = `https://${this.pximgBed.value}`
       const res = await this.checkURL(url, () => {
-        if (url == 'https://i-cf.pximg.net') return true
         return checkImgAvailable(`${url}/user-profile/img/2022/02/03/15/54/20/22159592_fce9f5c7a908c9b601dc7e9da7a412a3_50.jpg?_t=${Date.now()}`)
       })
       if (!res) return
@@ -356,6 +394,16 @@ export default {
       this.saveSetting('PXIMG_PROXY', this.pximgBed.value)
     },
     async changePximgBed_({ _value }) {
+      // this.pximgBed_.value = _value
+      // SessionStorage.clear()
+      // await localDb.clear()
+      // this.saveSetting('PXIMG_PROXY', _value)
+
+      const url = `https://${_value}`
+      const res = await this.checkURL(url, () => {
+        return checkImgAvailable(`${url}/user-profile/img/2022/02/03/15/54/20/22159592_fce9f5c7a908c9b601dc7e9da7a412a3_50.jpg?_t=${Date.now()}`)
+      })
+      if (!res) return
       this.pximgBed_.value = _value
       SessionStorage.clear()
       await localDb.clear()
@@ -372,6 +420,15 @@ export default {
       this.saveSetting('HIBIAPI_BASE', this.hibiapi.value)
     },
     async changeHibiapi_({ _value }) {
+      // this.hibiapi_.value = _value
+      // SessionStorage.clear()
+      // await localDb.clear()
+      // this.saveSetting('HIBIAPI_BASE', _value)
+
+      const res = await this.checkURL(_value, () => {
+        return checkUrlAvailable(`${_value}/rank?_t=${Date.now()}`)
+      })
+      if (!res) return
       this.hibiapi_.value = _value
       SessionStorage.clear()
       await localDb.clear()
@@ -398,6 +455,10 @@ export default {
     changeEnableSwipe(val) {
       this.enableSwipe = val
       this.saveSetting('PXV_IMG_DTL_SWIPE', val)
+    },
+    changeUseFancybox(val) {
+      this.useFancybox = val
+      this.saveSetting('PXV_USE_FANCYBOX', val)
     },
     changePageEffect(val) {
       this.isPageEffectOn = val
@@ -427,6 +488,42 @@ export default {
       setTimeout(() => {
         location.reload()
       }, 500)
+    },
+    importSettings() {
+      const input = document.createElement('input')
+      input.type = 'file'
+      input.accept = '.txt'
+      input.style.display = 'none'
+      input.onchange = async e => {
+        try {
+          const text = await readTextFile(e.target.files[0])
+          const settings = JSON.parse(decodeURI(atob(text)))
+          console.log('settings: ', settings)
+          Object.keys(settings).forEach(k => {
+            localStorage.setItem(k, settings[k])
+          })
+          window.umami?.track('importSettings')
+          this.$toast.success('Success')
+          setTimeout(() => {
+            location.reload()
+          }, 500)
+        } catch (err) {
+          console.log('err: ', err)
+          this.$toast(`Error: ${err.message}`)
+        }
+      }
+      input.click()
+    },
+    exportSettings() {
+      window.umami?.track('exportSettings')
+      const settings = {}
+      const len = localStorage.length
+      for (let i = 0; i < len; i++) {
+        const keyName = localStorage.key(i)
+        settings[keyName] = localStorage.getItem(keyName)
+      }
+      const blob = new Blob([btoa(encodeURI(JSON.stringify(settings)))])
+      FileSaver.saveAs(blob, 'pixiv-viewer-settings.txt')
     },
     async checkURL(val, checkFn) {
       if (!isURL(val)) {
@@ -472,66 +569,66 @@ export default {
       }
     },
     async checkApiAvailable() {
-      const ck = 'setting.apiChk'
-      const isChk = await getCache(ck, false)
-      this.apiChecked = isChk
-      if (isChk) return
-      this.hibiapi_.actions.forEach(async e => {
-        this.$set(e, 'loading', true)
-        const startTime = Date.now()
-        try {
-          const resp = await fetch(`${e._value}/rank?_t=${startTime}`)
-          if (!resp.ok) throw new Error('Resp not ok.')
-          const duration = (Date.now() - startTime) / 1000
-          this.$set(e, 'subname', `${duration}s`)
-          this.$set(e, 'loading', false)
-          if (duration > 1) {
-            this.$set(e, 'color', 'grey')
-          } else if (duration < 0.5) {
-            this.$set(e, 'color', 'green')
-          } else {
-            this.$set(e, 'color', 'orange')
-          }
-        } catch (error) {
-          this.$set(e, 'loading', false)
-          this.$set(e, 'subname', '-1ms')
-          this.$set(e, 'color', 'red')
-        }
-      })
-      setCache(ck, true, 60 * 60 * 6)
+      // const ck = 'setting.apiChk'
+      // const isChk = await getCache(ck, false)
+      // this.apiChecked = isChk
+      // if (isChk) return
+      // this.hibiapi_.actions.forEach(async e => {
+      //   this.$set(e, 'loading', true)
+      //   const startTime = Date.now()
+      //   try {
+      //     const resp = await fetch(`${e._value}/rank?_t=${startTime}`)
+      //     if (!resp.ok) throw new Error('Resp not ok.')
+      //     const duration = (Date.now() - startTime) / 1000
+      //     this.$set(e, 'subname', `${duration}s`)
+      //     this.$set(e, 'loading', false)
+      //     if (duration > 1) {
+      //       this.$set(e, 'color', 'grey')
+      //     } else if (duration < 0.5) {
+      //       this.$set(e, 'color', 'green')
+      //     } else {
+      //       this.$set(e, 'color', 'orange')
+      //     }
+      //   } catch (error) {
+      //     this.$set(e, 'loading', false)
+      //     this.$set(e, 'subname', '-1ms')
+      //     this.$set(e, 'color', 'red')
+      //   }
+      // })
+      // setCache(ck, true, 60 * 60 * 6)
     },
     async checkImgAvailable() {
-      const ck = 'setting.imgChk'
-      const isChk = await getCache(ck, false)
-      this.pximgChecked = isChk
-      if (isChk) return
-      this.pximgBed_.actions.forEach(async e => {
-        this.$set(e, 'loading', true)
-        const startTime = Date.now()
-        let img = document.createElement('img')
-        img.referrerPolicy = 'no-referrer'
-        img.src = `https://${e._value}/user-profile/img/2022/02/03/15/54/20/22159592_fce9f5c7a908c9b601dc7e9da7a412a3_50.jpg?_t=${startTime}`
-        img.onload = () => {
-          const duration = (Date.now() - startTime) / 1000
-          this.$set(e, 'subname', `${duration}s`)
-          this.$set(e, 'loading', false)
-          if (duration > 1) {
-            this.$set(e, 'color', '#969799')
-          } else if (duration < 0.5) {
-            this.$set(e, 'color', 'green')
-          } else {
-            this.$set(e, 'color', 'orange')
-          }
-          img = null
-        }
-        img.onerror = () => {
-          this.$set(e, 'loading', false)
-          this.$set(e, 'subname', '-1ms')
-          this.$set(e, 'color', 'red')
-          img = null
-        }
-      })
-      setCache(ck, true, 60 * 60 * 6)
+      // const ck = 'setting.imgChk'
+      // const isChk = await getCache(ck, false)
+      // this.pximgChecked = isChk
+      // if (isChk) return
+      // this.pximgBed_.actions.forEach(async e => {
+      //   this.$set(e, 'loading', true)
+      //   const startTime = Date.now()
+      //   let img = document.createElement('img')
+      //   img.referrerPolicy = 'no-referrer'
+      //   img.src = `https://${e._value}/user-profile/img/2022/02/03/15/54/20/22159592_fce9f5c7a908c9b601dc7e9da7a412a3_50.jpg?_t=${startTime}`
+      //   img.onload = () => {
+      //     const duration = (Date.now() - startTime) / 1000
+      //     this.$set(e, 'subname', `${duration}s`)
+      //     this.$set(e, 'loading', false)
+      //     if (duration > 1) {
+      //       this.$set(e, 'color', '#969799')
+      //     } else if (duration < 0.5) {
+      //       this.$set(e, 'color', 'green')
+      //     } else {
+      //       this.$set(e, 'color', 'orange')
+      //     }
+      //     img = null
+      //   }
+      //   img.onerror = () => {
+      //     this.$set(e, 'loading', false)
+      //     this.$set(e, 'subname', '-1ms')
+      //     this.$set(e, 'color', 'red')
+      //     img = null
+      //   }
+      // })
+      // setCache(ck, true, 60 * 60 * 6)
     },
   },
 }

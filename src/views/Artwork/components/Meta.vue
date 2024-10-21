@@ -5,13 +5,14 @@
       <canvas ref="mask" class="mask-text"></canvas>
     </div>
     <div class="author-info" :class="{ is_novel: isNovel }">
-      <img
+      <Pximg
         v-if="!isNovel"
         class="avatar"
+        nobg
         :src="artwork.author.avatar"
         :alt="artwork.author.name"
-        @click="toAuthor(artwork.author.id)"
-      >
+        @click.native="toAuthor(artwork.author.id)"
+      />
       <div class="name-box">
         <div v-if="isNovel && artwork.series && artwork.series.id" class="series">
           <router-link :to="`/novel/series/${artwork.series.id}`">{{ artwork.series.title }}</router-link>
@@ -66,9 +67,12 @@
         @contextmenu="preventContext"
       >UID:{{ artwork.author.id }}<Icon name="copy" style="margin-left: 1px;" /></span>
     </div>
-    <ul class="tag-list" :class="{ censored: isCensored(artwork) }">
-      <li v-if="artwork.illust_ai_type == 2">
+    <ul class="tag-list" :class="{ censored }">
+      <li v-if="isAiIllust">
         <van-tag class="x_tag" size="large" color="#FFB11B">{{ $t('common.ai_gen') }}</van-tag>
+      </li>
+      <li v-else-if="maybeAiAuthor">
+        <van-tag class="x_tag" size="large" color="#FFB11B">Maybe AI</van-tag>
       </li>
       <li v-if="artwork.x_restrict">
         <van-tag class="x_tag" size="large" type="danger">NSFW</van-tag>
@@ -91,13 +95,13 @@
     <div :class="{ shrink: isShrink }" @click="isShrink = false">
       <div
         class="caption"
-        :class="{ censored: isCensored(artwork) }"
+        :class="{ censored }"
         @click.stop.prevent="handleClick($event)"
         v-html="artwork.caption"
       ></div>
       <Icon v-if="isShrink" class="dropdown" name="dropdown" scale="4" />
     </div>
-    <div v-if="!isNovel " class="meta_btns" :class="{ censored: isCensored(artwork) }">
+    <div v-if="!isNovel " class="meta_btns" :class="{ censored }">
       <van-button
         v-if="isLoggedIn"
         size="small"
@@ -137,13 +141,11 @@
         position="right"
         get-container="body"
         closeable
-        :overlay="false"
       >
-        <iframe
-          v-if="showComments"
-          class="comments-iframe"
-          :src="`https://now.pixiv.pics/#/comments/${artwork.id}`"
-        ></iframe>
+        <template v-if="showComments">
+          <p class="comments-title">{{ $t('hGqGftQ7v772prEac1hbJ') }}</p>
+          <CommentsArea :id="artwork.id" :count="0" :limit="10" />
+        </template>
       </van-popup>
     </div>
   </div>
@@ -154,13 +156,17 @@ import { mapGetters } from 'vuex'
 import FileSaver from 'file-saver'
 import dayjs from 'dayjs'
 import { Dialog } from 'vant'
-import { copyText, sleep } from '@/utils'
+import { copyText, sleep, isSafari } from '@/utils'
 import { i18n } from '@/i18n'
 import { isIllustBookmarked, addBookmark, removeBookmark } from '@/api/user'
 import { localApi } from '@/api'
 import { toggleBookmarkCache } from '@/utils/storage/siteCache'
+import { isAiIllust } from '@/utils/filter'
+import CommentsArea from './Comment/CommentsArea.vue'
 
 export default {
+  name: 'ArtworkMeta',
+  components: { CommentsArea },
   filters: {
     convertToK(val) {
       if (!val) return '-'
@@ -190,6 +196,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    maybeAiAuthor: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -201,8 +211,14 @@ export default {
   },
   computed: {
     ...mapGetters(['isCensored', 'isLoggedIn']),
+    censored() {
+      return this.isCensored(this.artwork)
+    },
     showTranslatedTags() {
       return i18n.locale.includes('zh')
+    },
+    isAiIllust() {
+      return isAiIllust(this.artwork)
     },
   },
   watch: {
@@ -224,8 +240,7 @@ export default {
     },
   },
   mounted() {
-    const ua = navigator.userAgent
-    if (!/Chrome/i.test(ua) && /Safari/i.test(ua)) return
+    if (isSafari()) return
     this.$nextTick(() => {
       setTimeout(() => {
         this.drawMask()
@@ -477,15 +492,10 @@ export default {
   }
 }
 
-.comments-popup {
-  top 0
-  transform none
-  overflow-y hidden
-}
-.comments-iframe {
-  width 750px
-  height 100vh
-  border 0
+.comments-title {
+  padding 40px 0 0 40px
+  font-size 0.45rem
+  font-weight bold
 }
 
 .artwork-meta {

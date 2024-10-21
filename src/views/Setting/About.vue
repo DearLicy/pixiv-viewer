@@ -3,7 +3,7 @@
     <top-bar id="top-bar-wrap" />
     <h3 class="af_title">{{ $t('about.title') }}</h3>
     <van-cell-group :title="$t('about.about_site')">
-      <van-cell center :title="$t('about.version')" clickable label="v1.14.4" />
+      <van-cell center :title="$t('about.version')" clickable :label="ver" />
       <van-cell center :title="$t('about.disclaimer')" is-link :label="$t('tips.click_view')" to="/setting/about/disclaimer" />
       <van-cell
         center
@@ -31,6 +31,13 @@
       />
       <van-cell
         center
+        title="Pixiv.cat"
+        is-link
+        label="https://pixiv.re"
+        @click="openLink('https://pixiv.re')"
+      />
+      <van-cell
+        center
         title="pxder"
         is-link
         label="Github:Tsuk1ko/pxder"
@@ -54,10 +61,17 @@
     <van-cell-group :title="$t('about.feedback')">
       <van-cell
         center
-        title="Github Issues"
+        title="Github Discussions"
         is-link
         label="Github:asadahimeka/pixiv-viewer"
-        @click="openLink('https://github.com/asadahimeka/pixiv-viewer/issues')"
+        @click="openLink('https://github.com/asadahimeka/pixiv-viewer/discussions')"
+      />
+      <van-cell
+        center
+        title="Github Issues"
+        is-link
+        label="Github:asadahimeka/pixiv-viewer-apk"
+        @click="openLink('https://github.com/asadahimeka/pixiv-viewer-apk/issues')"
       />
       <van-cell
         center
@@ -67,12 +81,30 @@
         @click="openLink('https://www.nanoka.top/say/pxve_comments.html')"
       />
     </van-cell-group>
+    <van-cell-group v-if="backSites" :title="$t('1V8tlBs--oNk_UbzsItA-')">
+      <van-cell
+        v-for="s in backSites"
+        :key="s"
+        center
+        :title="`https://${s}`"
+        is-link
+        @click="openLink(`https://${s}`)"
+      />
+    </van-cell-group>
   </div>
 </template>
 
 <script>
+import { BACKUP_DOMAINS, CURRENT_APP_VERSION } from '@/consts'
+
 export default {
   name: 'SettingAbout',
+  data() {
+    return {
+      ver: CURRENT_APP_VERSION,
+      backSites: BACKUP_DOMAINS.split(',').filter(Boolean),
+    }
+  },
   head() {
     return { title: this.$t('about.title') }
   },

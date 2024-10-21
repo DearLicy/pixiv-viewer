@@ -5,7 +5,7 @@
       <div v-show="loading" class="loading"></div>
     </van-uploader>
     <span>
-      <Icon v-show="!loading&&file" class="image-search-close" name="close" @click="reset" />
+      <Icon v-show="!loading&&file" class="image-search-close" name="close" @click.native="reset" />
     </span>
     <div v-if="file" class="container">
       <div class="thumb">
@@ -37,6 +37,7 @@
 
 <script>
 import _ from 'lodash'
+import { PIXIV_NEXT_URL } from '@/consts'
 
 export default {
   filters: {
@@ -110,7 +111,7 @@ export default {
 
       const formData = new FormData()
       formData.append('file', file.file, file.file.name)
-      fetch('https://hibiapi.pixiv.pics/api/sauce/', {
+      fetch(`${PIXIV_NEXT_URL}/api/saucenao`, {
         method: 'POST',
         body: formData,
       }).then(res => {

@@ -11,9 +11,9 @@ const DEF_API_HOSTS = {
 
 async function setApiHosts(config) {
   console.log('config: ', config)
-  globalThis.p_api_hosts = DEF_API_HOSTS
+  window.p_api_hosts = DEF_API_HOSTS
   // if (config.apiHosts) {
-  //   globalThis.p_api_hosts = config.apiHosts
+  //   window.p_api_hosts = config.apiHosts
   //   return
   // }
   // try {
@@ -23,15 +23,15 @@ async function setApiHosts(config) {
   //   })
   //   const { data } = res.data.Answer[0]
   //   console.log('dns answer: ', data)
-  //   globalThis.p_api_hosts = {
+  //   window.p_api_hosts = {
   //     [OAUTH_DOMAIN]: data,
   //     [API_DOMAIN]: data,
   //   }
-  //   config.apiHosts = globalThis.p_api_hosts
+  //   config.apiHosts = window.p_api_hosts
   //   PixivAuth.writeConfig(config)
   // } catch (err) {
   //   console.log('setApiHosts err: ', err)
-  //   globalThis.p_api_hosts = DEF_API_HOSTS
+  //   window.p_api_hosts = DEF_API_HOSTS
   // }
 }
 
@@ -39,7 +39,7 @@ async function prepare() {
   const config = PixivAuth.readConfig()
   if (!PixivAuth.checkConfig(config)) throw new Error('Not login.')
   if (config.useApiProxy) {
-    globalThis.p_api_proxy = config.apiProxy || DEF_API_PROXY
+    window.p_api_proxy = config.apiProxy || DEF_API_PROXY
   } else if (config.directMode) {
     await setApiHosts(config)
   }
@@ -212,10 +212,8 @@ function initApp(pixiv) {
     return pixiv.trendingTagsNovel(req.query)
   })
   app.get('/related', async req => {
-    const { page = 1, size = 30, id } = req.query
-    return pixiv.illustRelated(id, {
-      offset: (page - 1) * size,
-    })
+    const { id, nextUrl } = req.query
+    return pixiv.illustRelated(id, { nextUrl })
   })
   app.get('/related_novel', async req => {
     const { page = 1, size = 30, id } = req.query
@@ -292,6 +290,12 @@ function initApp(pixiv) {
   app.get('/webview_novel', async req => {
     const { id, raw } = req.query
     return pixiv.webviewNovel(id, raw == 'true')
+  })
+  app.get('/live_list', async req => {
+    const { page = 1, size = 30 } = req.query
+    const params = {}
+    if (page > 1) params.offset = (page - 1) * size
+    return pixiv.liveList(params)
   })
   app.get('/req_get', async req => {
     const { path, params } = req.query

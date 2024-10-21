@@ -34,9 +34,21 @@
           <van-button type="info" size="small" plain block @click="showComments = true">
             {{ $t('user.view_comments') }}
           </van-button>
-          <van-button v-if="showPntBtn" type="info" size="small" plain block @click="goYoudaoFanyi">
-            去有道翻译
-          </van-button>
+          <van-popover
+            v-if="showPntBtn"
+            v-model="showPntPopover"
+            :actions="pntActions"
+            trigger="click"
+            placement="top"
+            style="width: 100%;"
+            @select="onPntSelect"
+          >
+            <template #reference>
+              <van-button v-if="showPntBtn" type="info" size="small" plain block>
+                翻译
+              </van-button>
+            </template>
+          </van-popover>
         </div>
         <keep-alive>
           <AuthorNovelCard v-if="artwork.author" :id="artwork.author.id" :key="artwork.id" />
@@ -117,13 +129,11 @@
       position="right"
       get-container="body"
       closeable
-      :overlay="false"
     >
-      <iframe
-        v-if="showComments"
-        class="comments-iframe"
-        :src="`https://now.pixiv.pics/#/comments/${artwork.id}?novel=1`"
-      ></iframe>
+      <template v-if="showComments">
+        <p class="comments-title">{{ $t('hGqGftQ7v772prEac1hbJ') }}</p>
+        <CommentsArea :id="artwork.id" is-novel :count="0" :limit="10" />
+      </template>
     </van-popup>
   </div>
 </template>
@@ -132,9 +142,10 @@
 import _ from 'lodash'
 import FileSaver from 'file-saver'
 import { mapGetters } from 'vuex'
-import { ImagePreview } from 'vant'
+import { Dialog, ImagePreview } from 'vant'
 import api from '@/api'
-import { copyText } from '@/utils'
+import { PIXIV_NEXT_URL } from '@/consts'
+import { copyText, loadScript } from '@/utils'
 import { getCache, setCache } from '@/utils/storage/siteCache'
 import { LocalStorage } from '@/utils/storage'
 import { i18n } from '@/i18n'
@@ -143,6 +154,7 @@ import NovelView from './components/NovelView.vue'
 import Meta from './components/Meta'
 import AuthorNovelCard from './components/AuthorNovelCard.vue'
 import RelatedNovel from './components/RelatedNovel.vue'
+import CommentsArea from './components/Comment/CommentsArea.vue'
 import IconLink from '@/assets/images/share-sheet-link.png'
 import IconQQ from '@/assets/images/share-sheet-qq.png'
 import IconQrcode from '@/assets/images/share-sheet-qrcode.png'
@@ -171,6 +183,7 @@ export default {
     AuthorNovelCard,
     NovelView,
     RelatedNovel,
+    CommentsArea,
   },
   data() {
     return {
@@ -193,6 +206,14 @@ export default {
       textConfig,
       isCollapseMeta: false,
       showComments: false,
+      showPntPopover: false,
+      pntActions: [
+        { text: '加载沉浸式翻译 SDK', className: 'imt', key: 'imt' },
+        { text: '硅基流动 AI 翻译(glm4)', className: 'sc', key: 'sc_glm' },
+        { text: '硅基流动 AI 翻译(Qwen2)', className: 'sc', key: 'sc_qwen' },
+        { text: '微软翻译', className: 'ms', key: 'ms' },
+        { text: '谷歌翻译', className: 'gg', key: 'gg' },
+      ],
     }
   },
   head() {
@@ -205,7 +226,7 @@ export default {
   computed: {
     ...mapGetters(['isCensored']),
     showPntBtn() {
-      return sessionStorage.getItem('__pnt_installed') === '1'
+      return i18n.locale.includes('zh') && !/中文|中国语|Chinese|中國語|中国語/.test(JSON.stringify(this.artwork.tags))
     },
   },
   watch: {
@@ -304,7 +325,7 @@ export default {
         () => {
           ImagePreview({
             closeable: true,
-            images: [`https://api.obfs.dev/api/qrcode?text=${encodeURIComponent(location.href)}`],
+            images: [`https://api.moedog.org/qr/?url=${encodeURIComponent(location.href)}`],
           })
         },
         () => {
@@ -341,21 +362,116 @@ export default {
       this.$toast(this.$t('tips.current_value') + value)
     },
     downloadNovel() {
+      window.umami?.track('download_novel')
       FileSaver.saveAs(new Blob([this.novelText.text]), `${this.artwork.id}_${this.artwork.title}.txt`)
-      // window.umami?.track('download_novel')
     },
-    goYoudaoFanyi() {
-      if (/Mobile/i.test(navigator.userAgent)) {
-        return
+    async onPntSelect(action) {
+      window.umami?.track('translate_novel', { action })
+      const fns = {
+        imt: () => this.loadImtSdk(),
+        sc_glm: async () => this.fanyi('sc', await this.getNoTranslateWords(), 'glm'),
+        sc_qwen: async () => this.fanyi('sc', await this.getNoTranslateWords(), 'qwen'),
+        ms: async () => this.fanyi('ms', await this.getNoTranslateWords()),
+        gg: () => this.fanyi('gg'),
       }
-      this.openUrl(`https://fanyi.youdao.com/index.html#/?__pn_id__=${this.artwork.id}`)
+      const fn = fns[action.key]
+      fn && (await fn())
+    },
+    async getNoTranslateWords() {
+      return new Promise(resolve => {
+        Dialog.confirm({
+          title: '填写不翻译的文本',
+          message: `
+          <div id="get_pnt_nots_dialog">
+            <p style="margin:0.2rem 0">选择或输入不翻译的单词，以英文逗号分隔，留空跳过</p>
+            <input id="get_pnt_nots_input" type="text" >
+            <div style="height:1px;margin:0.2rem 0;border-bottom:1px solid #ccc"></div>
+            ${this.artwork.tags.map(e => `<div class="sel_block_chks"><input type="checkbox" data-tagname="${e.name}" onchange="if(this.checked){window['get_pnt_nots_input'].value=window['get_pnt_nots_input'].value.split(',').filter(e=>e).concat([this.getAttribute('data-tagname')]).join(',')}else{window['get_pnt_nots_input'].value=window['get_pnt_nots_input'].value.split(',').filter(e=>e&&e!=this.getAttribute('data-tagname')).join(',')}">${e.name}</div>`).join('')}
+          </div>`,
+          lockScroll: false,
+          closeOnPopstate: true,
+          cancelButtonText: this.$t('common.cancel'),
+          confirmButtonText: this.$t('common.confirm'),
+          beforeClose: (action, done) => {
+            if (action == 'confirm') {
+              const tagInp = document.querySelector('#get_pnt_nots_input')?.value || ''
+              resolve(tagInp)
+            }
+            done()
+          },
+        }).catch(() => {})
+      })
+    },
+    async fanyi(srv, nots = '', aiModel = 'glm') {
+      try {
+        const loading = this.$toast.loading({
+          duration: 0,
+          forbidClick: true,
+          message: '加载时间较长，请耐心等待',
+        })
+        const cacheKey = `novel.translate.${this.artwork.id}.${srv}.${nots}.${aiModel}`
+        let res = await getCache(cacheKey)
+        if (!res) {
+          let url = `${PIXIV_NEXT_URL}/api/pixiv-novel-translate/${this.artwork.id}.html?srv=${srv}`
+          if (nots) url += `&nots=${nots}`
+          if (srv == 'sc' && aiModel) url += `&aimd=${aiModel}`
+          res = await fetch(url).then(r => r.text())
+          if (!res.includes('Translate failed')) setCache(cacheKey, res)
+        }
+        this.novelText.text = res
+        loading.clear()
+      } catch (err) {
+        console.log('fanyi err: ', err)
+      }
+    },
+    async loadImtSdk() {
+      if (!localStorage.getItem('PXV_IMT_SDK_CFMED')) {
+        const res = await Dialog.confirm({
+          title: '加载沉浸式翻译 SDK',
+          message: '提示：如果已安装沉浸式翻译浏览器插件则无需加载沉浸式翻译 SDK',
+          lockScroll: false,
+          closeOnPopstate: true,
+          cancelButtonText: '取消',
+          confirmButtonText: '加载',
+        }).catch(() => 'cancel')
+        if (res != 'confirm') return
+      }
+      localStorage.setItem('PXV_IMT_SDK_CFMED', '1')
+      if (window.immersiveTranslateConfig) return
+      window.immersiveTranslateConfig = {
+        pageRule: {
+          selectors: ['.novel_text'],
+          translationClasses: ['color-gray'],
+        },
+      }
+      await loadScript('https://download.immersivetranslate.com/immersive-translate-sdk-latest.js')
+      const style = document.createElement('style')
+      style.innerHTML = `
+      .imt-fb-more-buttons .btn-animate:first-child,
+      .imt-fb-more-buttons .btn-animate:last-child,
+      .btn-animate[title="关闭悬浮球"],
+      .popup-container .popup-content > div.flex:first-child,
+      .popup-container .trial-pro-container,
+      .popup-container .text-sm.px-1.text-gray-2,
+      .popup-container .widgets-container.mt-5,
+      .popup-container footer,
+      .translation-service-container select option[value="deepl"],
+      .translation-service-container select option[value="openai"],
+      .translation-service-container select option[value="gemini"],
+      .translation-service-container select option[value="claude"],
+      .translation-service-container select option[value="more"] {
+        display: none !important;
+      }`
+      setTimeout(() => {
+        document.querySelector('#immersive-translate-popup')?.shadowRoot?.appendChild(style)
+      }, 800)
     },
   },
 }
 </script>
 
 <style lang="stylus">
-img[src*="/api/qrcode?text"]
+img[src*="https://api.moedog.org/qr/?url="]
   position absolute
   top 50%
   left 50%
@@ -371,16 +487,10 @@ img[src*="/api/qrcode?text"]
     padding-right 16px
 </style>
 <style lang="stylus" scoped>
-.comments-popup
-  top 0
-  transform none
-  overflow-y hidden
-
-.comments-iframe
-  width 750px
-  height 100vh
-  border 0
-
+.comments-title
+  padding 40px 0 0 40px
+  font-size 0.45rem
+  font-weight bold
 .artwork
   .skeleton
     margin: 30px 0;

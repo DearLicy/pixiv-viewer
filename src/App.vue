@@ -10,6 +10,7 @@ import Preload from '@/components/Preload'
 import { mapMutations } from 'vuex'
 import { existsSessionId, initUser } from '@/api/user'
 import { localApi } from './api'
+import { CURRENT_APP_VERSION } from './consts'
 
 export default {
   name: 'App',
@@ -18,7 +19,7 @@ export default {
   },
   head: {
     // if no subcomponents specify a metaInfo.title, this title will be used
-    title: 'Pxve',
+    title: 'Loading',
     // all titles will be injected into this template
     titleTemplate: '%s | Pixiv Viewer',
   },
@@ -39,6 +40,8 @@ export default {
   mounted() {
     const loading = document.querySelector('#ldio-loading')
     loading && (loading.style.display = 'none')
+    window.umami?.track('App Mounted', { host: location.host, ver: CURRENT_APP_VERSION })
+    if (!localStorage.PXV_ASSETS_LOADED) localStorage.PXV_ASSETS_LOADED = '1'
   },
   methods: {
     ...mapMutations(['setUser']),
@@ -77,7 +80,7 @@ html,body
     margin-bottom 0
     padding 0.3rem 0
     background: rgba(255,255,255,0.8)
-    backdrop-filter: saturate(200%) blur(6px)
+    backdrop-filter: saturate(200%) blur(10PX)
     .home-title
       position absolute
       top 50%
@@ -117,7 +120,7 @@ html,body
     .home-search
       display none
 
-@media screen and (max-width: 400px)
+@media screen and (max-width: 600px)
   .Home .home-i-tabs
     .app-title
       display none
@@ -178,4 +181,12 @@ html,body
         span
           font-size 0.26rem
 
+html:not([lang^=zh])
+  @media screen and (max-width: 1200px)
+    .Home .home-search
+      display none
+  @media screen and (max-width: 786px)
+    .Home .home-i-tabs
+      .app-title
+        display none
 </style>

@@ -2,6 +2,13 @@
 
 <h1 align="center">Pixiv Viewer <sup><small>Kai</small></sup></h1>
 
+![](https://img.shields.io/github/package-json/v/asadahimeka/pixiv-viewer)
+![](https://img.shields.io/badge/license-MIT-green)
+![](https://api.netlify.com/api/v1/badges/84d224a8-1630-4f47-94c2-ffb0e6da920a/deploy-status)
+![](https://img.shields.io/github/package-json/dependency-version/asadahimeka/pixiv-viewer/vue)
+![](https://img.shields.io/github/package-json/dependency-version/asadahimeka/pixiv-viewer/dev/@vue/cli-service)
+![](https://img.shields.io/github/package-json/dependency-version/asadahimeka/pixiv-viewer/vant)
+
 Demo: 🔗 [pixiv.pics](https://pixiv.pics)
 
 Download: ⏬ [App Center](https://install.appcenter.ms/users/yumine/apps/pixiv-viewer/distribution_groups/beta) | [GitHub Releases](https://github.com/asadahimeka/pixiv-viewer/releases)
@@ -35,6 +42,10 @@ Download: ⏬ [App Center](https://install.appcenter.ms/users/yumine/apps/pixiv-
 - [x] Dark Mode
 - [x] Swipe to toggle artworks
 
+## Feedback
+
+https://github.com/asadahimeka/pixiv-viewer/discussions
+
 ## Preview
 
 - Mobile
@@ -56,7 +67,6 @@ Download: ⏬ [App Center](https://install.appcenter.ms/users/yumine/apps/pixiv-
 - [PixivNow](https://now.pixiv.pics/ranking)
 - [PixivMoe](https://moe.pixiv.pics)
 - [PixivLxns](https://lxns.pixiv.pics)
-- [PIXID](https://pixid.top/ranking.php)
 - [pixivic](https://pixivic.com)
 - [vilipix](https://www.vilipix.com/ranking)
 - [moeview](https://moeview.pixiv.pics)
@@ -65,22 +75,22 @@ Download: ⏬ [App Center](https://install.appcenter.ms/users/yumine/apps/pixiv-
 
 ## Project setup
 ```
-yarn install
+pnpm install
 ```
 
 ### Compiles and hot-reloads for development
 ```
-yarn serve
+pnpm serve
 ```
 
 ### Compiles and minifies for production
 ```
-yarn build
+pnpm build
 ```
 
 ### Lints and fixes files
 ```
-yarn lint
+pnpm lint
 ```
 
 ### Customize configuration
@@ -90,12 +100,22 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### How to preset the image proxy and API instance if you build it yourself?
 
-Refer to [#2](https://github.com/asadahimeka/pixiv-viewer/issues/2) and [#5](https://github.com/asadahimeka/pixiv-viewer/issues/5) to set up the environment variable. You can create a new `.env` file in the project root directory and fill in the environment variables in the following format:
+Refer to [#10](https://github.com/asadahimeka/pixiv-viewer/discussions/10) and [#13](https://github.com/asadahimeka/pixiv-viewer/discussions/13) to set up the environment variable. You can create a new `.env` file in the project root directory and fill in the environment variables in the following format:
 
 ```env
 TEST="lalala"
 ABC=DEF
 ```
+
+### Some artworks cannot be viewed using US/UK IP
+
+See pixiv official announcement: https://www.pixiv.net/info.php?id=10837
+
+It is recommended to log in to this site with your own account before using it, and select a non-US/UK region in the official web page [settings](https://www.pixiv.net/setting_user.php). It is best to select the Japan region.
+
+### List and details do not match or repeat, search results do not match the search label
+
+It is caused by the CDN cache of the self -built API, you can switch other API instances in the settings or use it after logging in.
 
 ### Keep prompting that the API exceeds the limit or Rate Limit
 
@@ -115,7 +135,7 @@ It is recommended to use RefreshToken to log in
 
 ### Is there an iOS App?
 
-Currently there are only Android and Windows versions. Download: [Releases](https://github.com/asadahimeka/pixiv-viewer/releases)
+You can download it from [Github Releases](https://github.com/asadahimeka/pixiv-viewer/releases). Note that the iOS installation package is not signed, so you need to sign it yourself. Tutorials: [AltStore](https://faq.AltStore.io)
 
 ### Android version crashes after clicking download
 
@@ -130,12 +150,21 @@ This project uses [Vue I18n](https://kazupon.github.io/vue-i18n/) for internatio
 - [Vue](https://vuejs.org/)
 - [Vant UI](https://vant-ui.github.io/vant/v2/)
 - [Vue I18n](https://kazupon.github.io/vue-i18n/)
-- [HibiAPI](https://api.obfs.dev/docs)
+- [HibiAPI](https://github.com/mixmoe/HibiAPI)
+- [Pixiv.cat](https://pixiv.re)
 - [PixivNow](https://github.com/FreeNowOrg/PixivNow)
 - [SauceNAO](https://saucenao.com/)
 - [Cloudflare Workers](https://workers.cloudflare.com/)
-- [Vercel](https://vercel.com/)
+- [Netlify](https://netlify.com/)
+
+## Disclaimer
+
+This project has no affiliation with pixiv.net(ピクシブ株式会社).
+
+The copyright of all artworks presented in this project(Website/APP) belongs to Pixiv or its original authors.
+
+This project is for communication and learning only and may not be used for any commercial purposes.
 
 ## LICENSE
 
-[![MIT License Copyright (c) 2020 Jad](https://img.shields.io/github/license/journey-ad/pixiv-viewer)](https://github.com/asadahimeka/pixiv-viewer/blob/master/LICENSE)
+[![MIT License](https://img.shields.io/github/license/asadahimeka/pixiv-viewer)](https://github.com/asadahimeka/pixiv-viewer/blob/master/LICENSE)
